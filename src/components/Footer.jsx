@@ -47,9 +47,9 @@ const Footer = () => {
                     <div className={styles.footerSection}>
                         <h4 className={styles.footerHeading}>Contact Us</h4>
                         <ul className={styles.footerLinks}>
-                            <li>📞 +91 98765 43210</li>
+                            <li>📞 +91 90223 46385</li>
                             <li>💬 WhatsApp Available</li>
-                            <li>📍 Main Market Road</li>
+                            <li>📍 Shop No. 96, Shantinagar Seva Sangh, Ambojwadi Azad Nagar, Malvani, Malad West</li>
                         </ul>
                     </div>
                 </div>

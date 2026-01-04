@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import StackingCards from './components/StackingCards';
 import Services from './components/Services';
 import Products from './components/Products';
 import WhyChooseUs from './components/WhyChooseUs';
@@ -13,6 +14,7 @@ function App() {
     <>
       <Navbar />
       <Hero />
+      <StackingCards />
       <Services />
       <Products />
       <WhyChooseUs />

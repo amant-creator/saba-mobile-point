@@ -34,10 +34,26 @@
 }
 
 .navLinks {
-  display: flex;
+  display: none;
   list-style: none;
   gap: 2rem;
 }
+
+.desktopNav {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .navLinks.active {
+    display: flex;
+  }
+}
+
+
 
 .navLink {
   text-decoration: none;
@@ -63,7 +79,7 @@
   width: 100%;
 }
 
-.navCta .btn {
+.callButton {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -75,15 +91,90 @@
   font-size: 1rem;
   cursor: pointer;
   text-decoration: none;
-  transition: var(--transition);
-  background: var(--gradient-blue);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #ec4899 100%);
+  background-size: 200% 200%;
   color: var(--white);
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 6px 25px rgba(239, 68, 68, 0.5);
+  position: relative;
+  overflow: hidden;
+  animation: gradientAnimation 3s ease infinite;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.navCta .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.5);
+@keyframes gradientAnimation {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.callButton::before {
+  content: '📞';
+  margin-right: 0.3rem;
+  animation: ring 2s ease-in-out infinite;
+}
+
+@keyframes ring {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10%, 30% {
+    transform: rotate(-15deg);
+  }
+  20%, 40% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+}
+
+.callButton::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  animation: shimmerEffect 2s infinite;
+}
+
+@keyframes shimmerEffect {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+.callButton:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 35px rgba(239, 68, 68, 0.7);
+  animation: gradientAnimation 1.5s ease infinite, pulseGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 10px 35px rgba(239, 68, 68, 0.7), 0 0 20px rgba(236, 72, 153, 0.5);
+  }
+  50% {
+    box-shadow: 0 10px 40px rgba(239, 68, 68, 0.9), 0 0 30px rgba(236, 72, 153, 0.8);
+  }
+}
+
+.callButton:active {
+  transform: translateY(-1px) scale(1.02);
 }
 
 .menuToggle {

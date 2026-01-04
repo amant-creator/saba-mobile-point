@@ -1,10 +1,19 @@
 import { useState } from 'react';
 import { useNavbarScroll } from '../hooks/useNavbarScroll';
+import PillNav from './PillNav';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState('home');
     const isScrolled = useNavbarScroll();
+
+    const navItems = [
+        { label: 'Home', href: 'home' },
+        { label: 'Services', href: 'services' },
+        { label: 'Products', href: 'products' },
+        { label: 'Contact', href: 'contact' }
+    ];
 
     const scrollToSection = (sectionId) => {
         const element = document.getElementById(sectionId);
@@ -15,6 +24,7 @@ const Navbar = () => {
                 top: targetPosition,
                 behavior: 'smooth'
             });
+            setActiveSection(sectionId);
             setIsMenuOpen(false);
             document.body.classList.remove('no-scroll');
         }
@@ -33,23 +43,36 @@ const Navbar = () => {
                         <span className={styles.logoIcon}>📱</span>
                         <span className={styles.logoText}>Saba Mobile Point</span>
                     </a>
-                    <ul className={`${styles.navLinks} ${isMenuOpen ? styles.active : ''}`}>
-                        <li>
-                            <span className={styles.navLink} onClick={() => scrollToSection('home')}>Home</span>
-                        </li>
-                        <li>
-                            <span className={styles.navLink} onClick={() => scrollToSection('services')}>Services</span>
-                        </li>
-                        <li>
-                            <span className={styles.navLink} onClick={() => scrollToSection('products')}>Products</span>
-                        </li>
-                        <li>
-                            <span className={styles.navLink} onClick={() => scrollToSection('contact')}>Contact</span>
-                        </li>
-                    </ul>
-                    <div className={styles.navCta}>
-                        <a href="tel:+919876543210" className="btn">Call Now</a>
+
+                    <div className={styles.desktopNav}>
+                        <PillNav
+                            items={navItems}
+                            activeHref={activeSection}
+                            onItemClick={(item) => scrollToSection(item.href)}
+                            baseColor="transparent"
+                            pillColor="#f59e0b"
+                            hoveredPillTextColor="#ffffff"
+                            pillTextColor={isScrolled ? "#1f2937" : "#000000"}
+                        />
                     </div>
+
+                    <ul className={`${styles.navLinks} ${isMenuOpen ? styles.active : ''}`}>
+                        {navItems.map((item) => (
+                            <li key={item.label}>
+                                <span
+                                    className={`${styles.navLink} ${activeSection === item.href ? styles.activeLink : ''}`}
+                                    onClick={() => scrollToSection(item.href)}
+                                >
+                                    {item.label}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className={styles.navCta}>
+                        <a href="tel:+919022346385" className={styles.callButton}>Call Now</a>
+                    </div>
+
                     <button
                         className={`${styles.menuToggle} ${isMenuOpen ? styles.active : ''}`}
                         onClick={toggleMenu}
@@ -66,3 +89,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
