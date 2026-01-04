@@ -3,13 +3,14 @@ import { useTransform, motion, useScroll } from 'framer-motion';
 import Lenis from 'lenis';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import styles from './StackingCards.module.css';
+import printingStudioImg from '../assets/printing-studio.jpg';
 
 const stackingData = [
     {
         title: 'Banking & Payments',
         description:
             'Fast and secure financial services including money transfers, bill payments, and loan repayments. All your banking needs in one place.',
-        image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop',
+        image: 'https://i0.wp.com/sidgs.com/wp-content/uploads/2025/06/blogs-2-1.jpg?fit=1920%2C1080&ssl=crop',
         color: '#5196fd',
     },
     {
@@ -23,7 +24,7 @@ const stackingData = [
         title: 'Identity & Smart Cards',
         description:
             'Professional application services for PAN cards, Voter ID, Aadhaar PVC cards, and all government identity documents.',
-        image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&auto=format&fit=crop',
+        image: 'https://i.cdn.newsbytesapp.com/images/l38020250404163230.jpeg',
         color: '#13006c',
     },
     {
@@ -37,7 +38,7 @@ const stackingData = [
         title: 'Printing & Studio',
         description:
             'High-quality printing, scanning, and professional photography services. Urgent passport photos, xerox, lamination, and more.',
-        image: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=800&auto=format&fit=crop',
+        image: printingStudioImg,
         color: '#fd521a',
     },
 ];
