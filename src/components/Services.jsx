@@ -67,6 +67,7 @@ const Services = () => {
                 'B/W & Colour Xerox (All Size)',
                 'High-res Scan & Colour Print',
                 'Lamination All Sizes',
+                'Complete Stationary Items',
                 'Document Formatting'
             ],
             delay: '0.5s'
@@ -79,7 +80,6 @@ const Services = () => {
                 'Train Ticket Booking',
                 'Flight Ticket Booking',
                 'Bus Ticket Booking',
-                'Complete Stationary Items',
                 'Instant Booking Confirmations'
             ],
             delay: '0.6s'
@@ -113,8 +113,12 @@ const ServiceCard = ({ icon, title, description, features, delay }) => {
             <p className={styles.serviceDescription}>{description}</p>
             <ul className={styles.serviceFeatures}>
                 {features.map((feature, index) => (
-                    <li key={index} className={styles.featureItem}>
-                        <span className={styles.checkIcon}>✓</span>
+                    <li
+                        key={index}
+                        className={styles.featureItem}
+                        style={{ animationDelay: `${(index + 1) * 0.1}s` }}
+                    >
+                        <span className={styles.checkIcon}>✔</span>
                         {feature}
                     </li>
                 ))}
