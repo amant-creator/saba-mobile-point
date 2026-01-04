@@ -7,11 +7,16 @@ import WhyChooseUs from './components/WhyChooseUs';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppFAB from './components/WhatsAppFAB';
+import WelcomeModal from './components/WelcomeModal';
 import './App.css';
 
 function App() {
   return (
     <>
+      {/* Modal popup - appears automatically on first visit */}
+      <WelcomeModal />
+
+      {/* Main website content */}
       <Navbar />
       <Hero />
       <StackingCards />
