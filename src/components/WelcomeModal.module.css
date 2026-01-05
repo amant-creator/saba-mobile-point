@@ -17,6 +17,10 @@
   z-index: 9999;
   padding: 1rem;
   animation: fadeIn 0.3s ease-in-out;
+  /* Prevent scrolling on the overlay itself */
+  overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: none;
 }
 
 @keyframes fadeIn {
@@ -43,6 +47,9 @@
   position: relative;
   padding: 2.5rem;
   animation: slideUp 0.3s ease-out;
+  /* Prevent scroll from propagating to background */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideUp {

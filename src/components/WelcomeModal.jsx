@@ -39,10 +39,13 @@ const WelcomeModal = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // ============================================================================
-    // AUTO-POPUP ON PAGE LOAD
+    // AUTO-POPUP ON PAGE LOAD & EMAILJS INIT
     // ============================================================================
 
     useEffect(() => {
+        // Initialize EmailJS with your Public Key
+        emailjs.init('uMmpB1P1vz_IBlgXf');
+
         // Check if the modal has been shown before in this session
         const hasSeenModal = sessionStorage.getItem('welcomeModalShown');
 
@@ -93,25 +96,25 @@ const WelcomeModal = () => {
         const newErrors = {};
 
         // Full Name validation (required)
-        if (!formData.fullName.trim()) {
-            newErrors.fullName = 'Full name is required';
-        } else if (formData.fullName.trim().length < 2) {
-            newErrors.fullName = 'Name must be at least 2 characters';
+        if (!formData.user_name.trim()) {
+            newErrors.user_name = 'Full name is required';
+        } else if (formData.user_name.trim().length < 2) {
+            newErrors.user_name = 'Name must be at least 2 characters';
         }
 
         // Email validation (optional, but if provided must be valid)
-        if (formData.email.trim()) {
+        if (formData.user_email.trim()) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(formData.email)) {
-                newErrors.email = 'Please enter a valid email address';
+            if (!emailRegex.test(formData.user_email)) {
+                newErrors.user_email = 'Please enter a valid email address';
             }
         }
 
         // Mobile Number validation (required, numeric, 10 digits)
-        if (!formData.mobile.trim()) {
-            newErrors.mobile = 'Mobile number is required';
-        } else if (!/^\d{10}$/.test(formData.mobile.trim())) {
-            newErrors.mobile = 'Please enter a valid 10-digit mobile number';
+        if (!formData.user_phone.trim()) {
+            newErrors.user_phone = 'Mobile number is required';
+        } else if (!/^\d{10}$/.test(formData.user_phone.trim())) {
+            newErrors.user_phone = 'Please enter a valid 10-digit mobile number';
         }
 
         // Message validation (required)
@@ -169,45 +172,29 @@ const WelcomeModal = () => {
 
         try {
             // ========================================================================
-            // EMAILJS INTEGRATION - Sends form data to your email
+            // EMAILJS INTEGRATION - Exactly matching your logic
             // ========================================================================
+            const serviceID = 'default_service';
+            const templateID = 'template_7h96a7m';
 
-            // EmailJS configuration
-            // IMPORTANT: Replace these with your actual EmailJS credentials
-            // Get them from: https://www.emailjs.com/
-            const EMAILJS_SERVICE_ID = 'service_smyayeb';      // Replace with your Service ID
-            const EMAILJS_TEMPLATE_ID = 'template_2aihg68';    // Replace with your Template ID
-            const EMAILJS_PUBLIC_KEY = 'jDPw_A0RfLJoss9V6';      // Replace with your Public Key
+            // Use sendForm to send data directly from the HTML form element
+            await emailjs.sendForm(serviceID, templateID, e.target);
 
-            // Prepare email template parameters
-            const templateParams = {
-                from_name: formData.fullName,
-                from_email: formData.email || 'Not provided',
-                mobile: formData.mobile,
-                message: formData.message,
-                to_name: 'Admin',  // You can customize this
-            };
+            // Show success message
+            setShowSuccess(true);
 
-            // Send email using EmailJS
-            const response = await emailjs.send(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                templateParams,
-                EMAILJS_PUBLIC_KEY
-            );
-
-            console.log('Email sent successfully:', response);
-
-            // Close modal immediately to show the website
-            handleClose();
-
-            // Reset form (cleared for potential future submissions)
+            // Reset form
             setFormData({
-                fullName: '',
-                email: '',
-                mobile: '',
+                user_name: '',
+                user_email: '',
+                user_phone: '',
                 message: ''
             });
+
+            // Auto-close modal after 3 seconds
+            setTimeout(() => {
+                handleClose();
+            }, 3000);
 
         } catch (error) {
             console.error('Email sending error:', error);
@@ -238,6 +225,13 @@ const WelcomeModal = () => {
         }
     };
 
+    /**
+     * Prevents scroll propagation to background when modal content is scrolled
+     */
+    const handleModalScroll = (e) => {
+        e.stopPropagation();
+    };
+
     // ============================================================================
     // RENDER
     // ============================================================================
@@ -253,7 +247,11 @@ const WelcomeModal = () => {
             aria-modal="true"
             aria-labelledby="modal-title"
         >
-            <div className={styles.modalContent}>
+            <div
+                className={styles.modalContent}
+                onScroll={handleModalScroll}
+                onWheel={handleModalScroll}
+            >
                 {/* Close Button */}
                 <button
                     className={styles.closeButton}
@@ -289,78 +287,78 @@ const WelcomeModal = () => {
                             </p>
                         </div>
 
-                        {/* Form */}
-                        <form onSubmit={handleSubmit} className={styles.form} noValidate>
+                        {/* Form - with ID matching your logic if needed, though e.target is used */}
+                        <form id="form" onSubmit={handleSubmit} className={styles.form} noValidate>
 
                             {/* Full Name Field */}
                             <div className={styles.formGroup}>
-                                <label htmlFor="fullName" className={styles.label}>
+                                <label htmlFor="user_name" className={styles.label}>
                                     Full Name <span className={styles.required}>*</span>
                                 </label>
                                 <input
                                     type="text"
-                                    id="fullName"
-                                    name="fullName"
-                                    value={formData.fullName}
+                                    id="user_name"
+                                    name="user_name"
+                                    value={formData.user_name}
                                     onChange={handleInputChange}
-                                    className={`${styles.input} ${errors.fullName ? styles.inputError : ''}`}
+                                    className={`${styles.input} ${errors.user_name ? styles.inputError : ''}`}
                                     placeholder="Enter your full name"
                                     aria-required="true"
-                                    aria-invalid={!!errors.fullName}
-                                    aria-describedby={errors.fullName ? 'fullName-error' : undefined}
+                                    aria-invalid={!!errors.user_name}
+                                    aria-describedby={errors.user_name ? 'user_name-error' : undefined}
                                 />
-                                {errors.fullName && (
-                                    <span id="fullName-error" className={styles.errorMessage} role="alert">
-                                        {errors.fullName}
+                                {errors.user_name && (
+                                    <span id="user_name-error" className={styles.errorMessage} role="alert">
+                                        {errors.user_name}
                                     </span>
                                 )}
                             </div>
 
                             {/* Email Field */}
                             <div className={styles.formGroup}>
-                                <label htmlFor="email" className={styles.label}>
+                                <label htmlFor="user_email" className={styles.label}>
                                     Email Address
                                 </label>
                                 <input
                                     type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
+                                    id="user_email"
+                                    name="user_email"
+                                    value={formData.user_email}
                                     onChange={handleInputChange}
-                                    className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
+                                    className={`${styles.input} ${errors.user_email ? styles.inputError : ''}`}
                                     placeholder="your.email@example.com"
-                                    aria-invalid={!!errors.email}
-                                    aria-describedby={errors.email ? 'email-error' : undefined}
+                                    aria-invalid={!!errors.user_email}
+                                    aria-describedby={errors.user_email ? 'user_email-error' : undefined}
                                 />
-                                {errors.email && (
-                                    <span id="email-error" className={styles.errorMessage} role="alert">
-                                        {errors.email}
+                                {errors.user_email && (
+                                    <span id="user_email-error" className={styles.errorMessage} role="alert">
+                                        {errors.user_email}
                                     </span>
                                 )}
                             </div>
 
                             {/* Mobile Number Field */}
                             <div className={styles.formGroup}>
-                                <label htmlFor="mobile" className={styles.label}>
+                                <label htmlFor="user_phone" className={styles.label}>
                                     Mobile Number <span className={styles.required}>*</span>
                                 </label>
                                 <input
                                     type="tel"
-                                    id="mobile"
-                                    name="mobile"
-                                    value={formData.mobile}
+                                    id="user_phone"
+                                    name="user_phone"
+                                    value={formData.user_phone}
                                     onChange={handleInputChange}
-                                    className={`${styles.input} ${errors.mobile ? styles.inputError : ''}`}
+                                    className={`${styles.input} ${errors.user_phone ? styles.inputError : ''}`}
                                     placeholder="1234567890"
                                     maxLength="10"
                                     pattern="[0-9]{10}"
                                     aria-required="true"
-                                    aria-invalid={!!errors.mobile}
-                                    aria-describedby={errors.mobile ? 'mobile-error' : undefined}
+                                    aria-invalid={!!errors.user_phone}
+                                    aria-describedby={errors.user_phone ? 'user_phone-error' : undefined}
                                 />
-                                {errors.mobile && (
-                                    <span id="mobile-error" className={styles.errorMessage} role="alert">
-                                        {errors.mobile}
+                                {errors.user_phone && (
+                                    <span id="user_phone-error" className={styles.errorMessage} role="alert">
+                                        {errors.user_phone}
                                     </span>
                                 )}
                             </div>
@@ -399,24 +397,25 @@ const WelcomeModal = () => {
                             {/* Submit Button */}
                             <button
                                 type="submit"
+                                id="button"
                                 className={styles.submitButton}
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? (
                                     <>
                                         <span className={styles.spinner}></span>
-                                        Submitting...
+                                        Sending...
                                     </>
                                 ) : (
-                                    'Submit'
+                                    'Send Email'
                                 )}
                             </button>
                         </form>
 
                         {/* Footer Text */}
-                        <p className={styles.footerText}>
+                        {/* <p className={styles.footerText}>
                             You can close this form anytime by clicking the × button or pressing ESC
-                        </p>
+                        </p> */}
                     </>
                 )}
             </div>
